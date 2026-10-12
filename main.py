@@ -31,15 +31,13 @@ class CampusFlow:
         return ticket_id
     def priority_level(self, urgency, affected_users):
         if urgency == "high" and affected_users >= 10:
-            return "critical"
-        elif urgency == "high":
+            return  "critical"
+        elif urgency == "high" or affected_users >= 10:
             return "high"
-        elif urgency == "medium" and affected_users >= 10:
-            return "high"
-        elif urgency == "medium":
+        elif urgency == "medium" and affected_users >= 3:
             return "medium"
         else:
-            return "low"
+         return "low"
 
     def create_ticket(self):
         
