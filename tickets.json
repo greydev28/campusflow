@@ -1,22 +1,12 @@
 [
-4{
-44"id": "T001",
-44"title": "wifi campus",
-44"category": "Network",
-44"urgency": "high",
-44"affected_users": 21,
-44"priority": "critical",
-44"status": "Open",
-44"assign_to": "john"
-4},
-4{
-44"id": "T002",
-44"title": "keyboard",
-44"category": "Hardware",
-44"urgency": "high",
-44"affected_users": 5,
-44"priority": "high",
-44"status": "Open",
-44"assign_to": "greydev"
-4}
+    {
+        "id": "T001",
+        "title": "wifi",
+        "category": "Network",
+        "urgency": "low",
+        "affected_users": 212,
+        "priority": "high",
+        "status": "Open",
+        "assign_to": "GREYDEV"
+    }
 ]

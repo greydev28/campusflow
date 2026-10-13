@@ -24,20 +24,64 @@ class CampusFlow:
     def __init__(self):
         self.ticket_counter = 1
         self.tickets = []
+    def menu(self):
+        while True:
+            print("\n" + "=" * 35)
+            print("       CAMPUSFLOW TICKET MANAGER")
+            print("=" * 35)
+            print("1. Create Ticket")
+            print("2. View All Tickets")
+            print("3. Search Ticket")
+            print("4. Assign Ticket")
+            print("5. Close Ticket")
+            print("6. Save Tickets")
+            print("7. Exit")
+            print("=" * 35)
 
+            choice = input("Enter your choice (1-7): ").strip()
+
+            if choice == "1":
+                self.create_ticket()
+
+            elif choice == "2":
+                self.view_tickets()
+
+            elif choice == "3":
+                ticket_id = input("Enter ticket ID: ").strip().upper()
+                self.search_tickets(ticket_id)
+
+            elif choice == "4":
+                ticket_id = input("Enter ticket ID: ").strip().upper()
+                staff_name = input("Enter staff name: ").strip()
+                self.assign_ticket(ticket_id, staff_name)
+
+            elif choice == "5":
+                ticket_id = input("Enter ticket ID: ").strip().upper()
+                self.close_ticket(ticket_id)
+
+            elif choice == "6":
+                self.save_tickets()
+
+            elif choice == "7":
+                self.save_tickets()
+                print("Thank you for using CampusFlow. Goodbye!")
+                break
+
+            else:
+                print("Invalid choice. Please select a number from 1 to 7.")
     def id_generator(self):
-        ticket_id = f'T{self.ticket_counter:03d}'
-        self.ticket_counter += 1
-        return ticket_id
+            ticket_id = f'T{self.ticket_counter:03d}'
+            self.ticket_counter += 1
+            return ticket_id
     def priority_level(self, urgency, affected_users):
-        if urgency == "high" and affected_users >= 10:
-            return  "critical"
-        elif urgency == "high" or affected_users >= 10:
-            return "high"
-        elif urgency == "medium" and affected_users >= 3:
-            return "medium"
-        else:
-         return "low"
+            if urgency == "high" and affected_users >= 10:
+                return  "critical"
+            elif urgency == "high" or affected_users >= 10:
+                return "high"
+            elif urgency == "medium" and affected_users >= 3:
+                return "medium"
+            else:
+                return "low"
 
     def create_ticket(self):
         
@@ -143,7 +187,8 @@ class CampusFlow:
             })
 
             with open("tickets.json","w") as file:
-                json.dump(ticket_data,file,indent="4")
+                json.dump(ticket_data,file,indent=4)
+        print("ticket saved successfully")
 
     
     def load_tickets(self):
@@ -163,13 +208,17 @@ class CampusFlow:
                     data["priority"],
                     data["status"]
                 )
-                ticket.assigned_to = data["assigned_to"]
-                self.tickets.append(ticket)
-
+                ticket.assigned_to = data.get("assigned_to",data.get("assign_to"))
             print("Tickets loaded successfully.")
 
         except FileNotFoundError:
             print("No saved tickets file found.")
+            self.tickets = []
+            return
+        except json.JSONDecodeError as error:
+            print(f"Invalid JSON in tickets.json: {error}")
+            self.tickets = []
+            return
 
         self.ticket_counter = max(
         (int(ticket.id[1:]) for ticket in self.tickets),
@@ -179,14 +228,7 @@ class CampusFlow:
 
 
 
-
-campus = CampusFlow()
-campus.create_ticket()
-campus.create_ticket()
-
-campus.assign_ticket("T001","john")
-campus.assign_ticket("T002","greydev")
-
-campus.save_tickets()
-
-                                
+if __name__ == "__main__":
+    campus = CampusFlow()
+    campus.load_tickets() 
+    campus.menu()     
